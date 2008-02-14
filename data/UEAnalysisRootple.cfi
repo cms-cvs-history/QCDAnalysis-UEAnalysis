@@ -1,0 +1,18 @@
+module ueAnalysisRootple = AnalysisRootpleProducer {
+    #Name of output file
+    untracked string HistOutFile = "UnderlyingEvent_RootFile.root"
+    #lable of MC event
+    untracked string MCEvent = "VtxSmeared"
+    #label of Jet made with MC particles
+    untracked string GenJetCollectionName = "iterativeCone5GenJetsSeed10"
+    #label of Jet made with only charged MC particles
+    untracked string ChgGenJetCollectionName = "iterativeCone5ChgGenJetsSeed10"
+    #label of Jet made with Tracks
+    untracked string TracksJetCollectionName = "iterativeCone5BasicJetsSeed10"
+    #label of standard Calo Jet 
+    untracked string RecoCaloJetCollectionName = "iterativeCone5CaloJets"
+    #label of charged MC particles
+    untracked string ChgGenPartCollectionName = "chargeParticles"
+    #label of selected tracks
+    untracked string TracksCollectionName = "goodTracks"
+}
