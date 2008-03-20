@@ -1,6 +1,7 @@
 module ueAnalysisRootple = AnalysisRootpleProducer {
     #Name of output file
     untracked string HistOutFile = "UnderlyingEvent_RootFile.root"
+    untracked bool OnlyRECO = true	
     #lable of MC event
     untracked string MCEvent = "VtxSmeared"
     #label of Jet made with MC particles
