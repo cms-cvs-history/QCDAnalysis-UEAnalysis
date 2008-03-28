@@ -1,12 +1,15 @@
-module ueAnalysisRootpleOnlyMC = AnalysisRootpleProducer {
-    #Name of output file
-    untracked string HistOutFile = "UnderlyingEvent_RootFile.root"
-    #lable of MC event
-    untracked string MCEvent = "VtxSmeared"
+module ueAnalysisRootpleOnlyMC = AnalysisRootpleProducerOnlyMC {
+
+    #label of MC event
+#    untracked string MCEvent = "VtxSmeared"
+    untracked string MCEvent = "source"
+
     #label of Jet made with MC particles
     untracked string GenJetCollectionName = "iterativeCone5GenJetsSeed10"
+
     #label of Jet made with only charged MC particles
     untracked string ChgGenJetCollectionName = "iterativeCone5ChgGenJetsSeed10"
+
     #label of charged MC particles
     untracked string ChgGenPartCollectionName = "chargeParticles"
 }
