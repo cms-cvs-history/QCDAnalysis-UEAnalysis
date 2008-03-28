@@ -3,24 +3,23 @@ module ueAnalysisRootple = AnalysisRootpleProducer {
     untracked bool OnlyRECO = true	
 
     #lable of MC event
-#    untracked string MCEvent = "VtxSmeared"
-    untracked string MCEvent = "source"
+    untracked InputTag MCEvent = source
 
     #label of Jet made with MC particles
-    untracked string GenJetCollectionName = "iterativeCone5GenJetsSeed10"
+    untracked InputTag GenJetCollectionName = iterativeCone5GenJetsSeed10
 
     #label of Jet made with only charged MC particles
-    untracked string ChgGenJetCollectionName = "iterativeCone5ChgGenJetsSeed10"
+    untracked InputTag ChgGenJetCollectionName = iterativeCone5ChgGenJetsSeed10
 
     #label of Jet made with Tracks
-    untracked string TracksJetCollectionName = "iterativeCone5BasicJetsSeed10"
+    untracked InputTag TracksJetCollectionName = iterativeCone5BasicJetsSeed10
 
     #label of standard Calo Jet 
-    untracked string RecoCaloJetCollectionName = "iterativeCone5CaloJets"
+    untracked InputTag RecoCaloJetCollectionName = iterativeCone5CaloJets
 
     #label of charged MC particles
-    untracked string ChgGenPartCollectionName = "chargeParticles"
+    untracked InputTag ChgGenPartCollectionName = chargeParticles
 
     #label of selected tracks
-    untracked string TracksCollectionName = "goodTracks"
+    untracked InputTag TracksCollectionName = goodTracks
 }
