@@ -23,10 +23,7 @@ module ueAnalysisRootple = AnalysisRootpleProducer {
     #label of selected tracks
     untracked InputTag TracksCollectionName = goodTracks
 
-     InputTag triggerResults  = TriggerResults
-     InputTag hltGlobalObject = hltMakeSummaryObjects
-     InputTag triggerName = singlePhotonHLTPath
-     InputTag hltFilter = hltL1IsoSinglePhotonTrackIsolFilter
-     InputTag triggerEvent = triggerSummaryAOD	
+    #label of trigger results
+    InputTag triggerResults  = TriggerResults
 
 }
