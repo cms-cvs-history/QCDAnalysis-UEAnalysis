@@ -1,0 +1,36 @@
+
+    # need to add PDTRecord in 2_0_0
+    # (used to be part of RecoJets/Configuration/data/GenJetParticles.cff)
+    include "SimGeneral/HepPDTESSource/data/pythiapdt.cfi"
+
+    include "RecoJets/Configuration/data/GenJetParticles.cff"
+
+    # select charged GenParticles with pt > 0.29
+    # 
+    # (threshold used to be 0.89, but tracking in 2_0_0 
+    #  saves tracks with pT > 0.29)
+
+    module goodParticles = GenParticleSelector {
+
+        InputTag src = genParticles
+        string cut = "pt > 0.0"
+        bool stableOnly = true
+        bool filter = false
+    }
+
+    module chargeParticles = GenParticleSelector {
+
+        InputTag src = genParticles
+        string cut = "charge != 0 & pt > 0.29"
+        bool stableOnly = true
+        bool filter = false
+    }
+
+	
+    sequence UEAnalysisParticles = {
+
+	genJetParticles,
+	goodParticles,
+	chargeParticles
+    }
+	

@@ -1,4 +1,4 @@
-module ueAnalysisRootple = AnalysisRootpleProducer {
+module UEAnalysisRootple = AnalysisRootpleProducer {
 
     untracked bool OnlyRECO = true	
 
