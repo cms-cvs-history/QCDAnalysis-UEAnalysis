@@ -25,5 +25,7 @@ module UEAnalysisRootple = AnalysisRootpleProducer {
 
     #label of trigger results
     InputTag triggerResults  = TriggerResults
-
+    
+    # label of trigger event
+    InputTag triggerEvent  = hltTriggerSummaryAOD
 }
