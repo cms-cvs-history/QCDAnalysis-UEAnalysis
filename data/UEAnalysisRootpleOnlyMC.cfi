@@ -4,10 +4,10 @@ module UEAnalysisRootpleOnlyMC = AnalysisRootpleProducerOnlyMC {
     untracked InputTag MCEvent = source
 
     #label of Jet made with MC particles
-    untracked InputTag GenJetCollectionName = iterativeCone5GenJetsSeed10
+    untracked InputTag GenJetCollectionName = IC5GenJet
 
     #label of Jet made with only charged MC particles
-    untracked InputTag ChgGenJetCollectionName = iterativeCone5ChgGenJetsSeed10
+    untracked InputTag ChgGenJetCollectionName = IC5ChgGenJet
 
     #label of charged MC particles
     untracked InputTag ChgGenPartCollectionName = chargeParticles
