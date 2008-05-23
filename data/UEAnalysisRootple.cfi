@@ -24,7 +24,7 @@ module UEAnalysisRootple = AnalysisRootpleProducer {
     untracked InputTag TracksCollectionName = goodTracks
 
     #label of trigger results
-    InputTag triggerResults  = TriggerResults
+    InputTag triggerResults  = TriggerResults::HLT
     
     # label of trigger event
     InputTag triggerEvent  = hltTriggerSummaryAOD
@@ -59,7 +59,7 @@ module UEAnalysisRootple500 = AnalysisRootpleProducer {
     untracked InputTag TracksCollectionName = goodTracks
 
     #label of trigger results
-    InputTag triggerResults  = TriggerResults
+    InputTag triggerResults  = TriggerResults::HLT
     
     # label of trigger event
     InputTag triggerEvent  = hltTriggerSummaryAOD
