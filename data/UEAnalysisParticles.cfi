@@ -10,16 +10,14 @@
     module goodParticles = GenParticleSelector {
 
         InputTag src = genParticles
-        string cut = "pt > 0.0"
-        bool stableOnly = true
+        string cut = "pt > 0.0 & status = 1"
         bool filter = false
     }
 	
     module chargeParticles = GenParticleSelector {
 
         InputTag src = genParticles
-        string cut = "charge != 0 & pt > 0.29"
-        bool stableOnly = true
+        string cut = "charge != 0 & pt > 0.29 & status = 1"
         bool filter = false
     }
 
