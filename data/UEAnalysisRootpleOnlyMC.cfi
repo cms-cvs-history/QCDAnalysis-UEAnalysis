@@ -1,4 +1,4 @@
-module UEAnalysisRootpleOnlyMC = AnalysisRootpleProducerOnlyMC {
+module ueAnalysisRootple = AnalysisRootpleProducerOnlyMC {
 
     #label of MC event
     untracked InputTag MCEvent = source
