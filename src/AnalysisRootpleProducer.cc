@@ -38,12 +38,65 @@ void AnalysisRootpleProducer::store(){
 
   AnalysisTree->Fill();
 
+  NumberMCParticles=0;
+  NumberTracks=0;
+  NumberInclusiveJet=0;
+  NumberChargedJet=0;
+  NumberTracksJet=0;
+  NumberCaloJet=0;
 }
 
 void AnalysisRootpleProducer::fillEventInfo(int e){
   EventKind = e;
 }
 
+void AnalysisRootpleProducer::fillMCParticles(float p, float pt, float eta, float phi){
+  MomentumMC[NumberMCParticles]=p;
+  TransverseMomentumMC[NumberMCParticles]=pt;
+  EtaMC[NumberMCParticles]=eta;
+  PhiMC[NumberMCParticles]=phi;
+  NumberMCParticles++;
+}
+
+void AnalysisRootpleProducer::fillTracks(float p, float pt, float eta, float phi){
+  MomentumTK[NumberTracks]=p;
+  TransverseMomentumTK[NumberTracks]=pt;
+  EtaTK[NumberTracks]=eta;
+  PhiTK[NumberTracks]=phi;
+  NumberTracks++;
+}
+
+void AnalysisRootpleProducer::fillInclusiveJet(float p, float pt, float eta, float phi){
+  MomentumIJ[NumberInclusiveJet]=p;
+  TransverseMomentumIJ[NumberInclusiveJet]=pt;
+  EtaIJ[NumberInclusiveJet]=eta;
+  PhiIJ[NumberInclusiveJet]=phi;
+  NumberInclusiveJet++;
+}
+
+void AnalysisRootpleProducer::fillChargedJet(float p, float pt, float eta, float phi){
+  MomentumCJ[NumberChargedJet]=p;
+  TransverseMomentumCJ[NumberChargedJet]=pt;
+  EtaCJ[NumberChargedJet]=eta;
+  PhiCJ[NumberChargedJet]=phi;
+  NumberChargedJet++;
+}
+
+void AnalysisRootpleProducer::fillTracksJet(float p, float pt, float eta, float phi){
+  MomentumTJ[NumberTracksJet]=p;
+  TransverseMomentumTJ[NumberTracksJet]=pt;
+  EtaTJ[NumberTracksJet]=eta;
+  PhiTJ[NumberTracksJet]=phi;
+  NumberTracksJet++;
+}
+
+void AnalysisRootpleProducer::fillCaloJet(float p, float pt, float eta, float phi){
+  MomentumEHJ[NumberCaloJet]=p;
+  TransverseMomentumEHJ[NumberCaloJet]=pt;
+  EtaEHJ[NumberCaloJet]=eta;
+  PhiEHJ[NumberCaloJet]=phi;
+  NumberCaloJet++;
+}
 
 AnalysisRootpleProducer::AnalysisRootpleProducer( const ParameterSet& pset )
 {
@@ -61,11 +114,16 @@ AnalysisRootpleProducer::AnalysisRootpleProducer( const ParameterSet& pset )
 
   // trigger results
   triggerResultsTag = pset.getParameter<InputTag>("triggerResults");
-  triggerEventTag   = pset.getParameter<InputTag>("triggerEvent");
   //   hltFilterTag      = pset.getParameter<InputTag>("hltFilter");
   //   triggerName       = pset.getParameter<InputTag>("triggerName");
 
   piG = acos(-1.);
+  NumberMCParticles=0;
+  NumberTracks=0;
+  NumberInclusiveJet=0;
+  NumberChargedJet=0;
+  NumberTracksJet=0;
+  NumberCaloJet=0;
 }
 
 void AnalysisRootpleProducer::beginJob( const EventSetup& )
@@ -76,6 +134,52 @@ void AnalysisRootpleProducer::beginJob( const EventSetup& )
 
   AnalysisTree->Branch("EventKind",&EventKind,"EventKind/I");
 
+  // store p, pt, eta, phi for particles and jets
+
+  // GenParticles at hadron level  
+  AnalysisTree->Branch("NumberMCParticles",&NumberMCParticles,"NumberMCParticles/I");
+  AnalysisTree->Branch("MomentumMC",MomentumMC,"MomentumMC[NumberMCParticles]/F");
+  AnalysisTree->Branch("TransverseMomentumMC",TransverseMomentumMC,"TransverseMomentumMC[NumberMCParticles]/F");
+  AnalysisTree->Branch("EtaMC",EtaMC,"EtaMC[NumberMCParticles]/F");
+  AnalysisTree->Branch("PhiMC",PhiMC,"PhiMC[NumberMCParticles]/F");
+  
+  // tracks
+  AnalysisTree->Branch("NumberTracks",&NumberTracks,"NumberTracks/I");
+  AnalysisTree->Branch("MomentumTK",MomentumTK,"MomentumTK[NumberTracks]/F");
+  AnalysisTree->Branch("TrasverseMomentumTK",TransverseMomentumTK,"TransverseMomentumTK[NumberTracks]/F");
+  AnalysisTree->Branch("EtaTK",EtaTK,"EtaTK[NumberTracks]/F");
+  AnalysisTree->Branch("PhiTK",PhiTK,"PhiTK[NumberTracks]/F");
+  
+  // GenJets
+  AnalysisTree->Branch("NumberInclusiveJet",&NumberInclusiveJet,"NumberInclusiveJet/I");
+  AnalysisTree->Branch("MomentumIJ",MomentumIJ,"MomentumIJ[NumberInclusiveJet]/F");
+  AnalysisTree->Branch("TrasverseMomentumIJ",TransverseMomentumIJ,"TransverseMomentumIJ[NumberInclusiveJet]/F");
+  AnalysisTree->Branch("EtaIJ",EtaIJ,"EtaIJ[NumberInclusiveJet]/F");
+  AnalysisTree->Branch("PhiIJ",PhiIJ,"PhiIJ[NumberInclusiveJet]/F");
+  
+  // jets from charged GenParticles
+  AnalysisTree->Branch("NumberChargedJet",&NumberChargedJet,"NumberChargedJet/I");
+  AnalysisTree->Branch("MomentumCJ",MomentumCJ,"MomentumCJ[NumberChargedJet]/F");
+  AnalysisTree->Branch("TrasverseMomentumCJ",TransverseMomentumCJ,"TransverseMomentumCJ[NumberChargedJet]/F");
+  AnalysisTree->Branch("EtaCJ",EtaCJ,"EtaCJ[NumberChargedJet]/F");
+  AnalysisTree->Branch("PhiCJ",PhiCJ,"PhiCJ[NumberChargedJet]/F");
+  
+  // jets from tracks
+  AnalysisTree->Branch("NumberTracksJet",&NumberTracksJet,"NumberTracksJet/I");
+  AnalysisTree->Branch("MomentumTJ",MomentumTJ,"MomentumTJ[NumberTracksJet]/F");
+  AnalysisTree->Branch("TrasverseMomentumTJ",TransverseMomentumTJ,"TransverseMomentumTJ[NumberTracksJet]/F");
+  AnalysisTree->Branch("EtaTJ",EtaTJ,"EtaTJ[NumberTracksJet]/F");
+  AnalysisTree->Branch("PhiTJ",PhiTJ,"PhiTJ[NumberTracksJet]/F");
+  
+  // jets from calorimeter towers
+  AnalysisTree->Branch("NumberCaloJet",&NumberCaloJet,"NumberCaloJet/I");
+  AnalysisTree->Branch("MomentumEHJ",MomentumEHJ,"MomentumEHJ[NumberCaloJet]/F");
+  AnalysisTree->Branch("TrasverseMomentumEHJ",TransverseMomentumEHJ,"TransverseMomentumEHJ[NumberCaloJet]/F");
+  AnalysisTree->Branch("EtaEHJ",EtaEHJ,"EtaEHJ[NumberCaloJet]/F");
+  AnalysisTree->Branch("PhiEHJ",PhiEHJ,"PhiEHJ[NumberCaloJet]/F");
+  
+
+  // alternative storage method:
   // save TClonesArrays of TLorentzVectors
   // i.e. store 4-vectors of particles and jets
 
@@ -106,69 +210,41 @@ void AnalysisRootpleProducer::beginJob( const EventSetup& )
 void AnalysisRootpleProducer::analyze( const Event& e, const EventSetup& )
 {
   
+  e.getByLabel( triggerResultsTag, triggerResults );
+  triggerNames.init( *(triggerResults.product()) );
+
   acceptedTriggers->Clear();
-  unsigned int iAcceptedTriggers( 0 );
-  if (e.getByLabel( triggerEventTag, triggerEvent ) )
+  unsigned int iAcceptedTriggers( 0 ); 
+  if ( triggerResults.product()->wasrun() )
     {
-       // look at TriggerEvent 
-
-      LogDebug("UEAnalysis") << "triggerEvent has " << triggerEvent.product()->sizeFilters() << " filters and "
-			     << "triggerEvent has " << triggerEvent.product()->sizeObjects() << " objects";
-
-      LogDebug("UEAnalysis") << "size of object collection is " << triggerEvent.product()->getObjects().size() 
-			     << "usedProcessName() " << triggerEvent.product()->usedProcessName();
-
-      for ( size_type index( 0 ) ; index < triggerEvent.product()->sizeFilters() ; ++index )
+      //cout << "at least one path out of " << triggerResults.product()->size() << " ran? " << triggerResults.product()->wasrun() << endl;
+  
+      if ( triggerResults.product()->accept() ) 
 	{
-	  LogDebug("UEAnalysis") << "filterLabel(size_type index) " << triggerEvent.product()->filterLabel(index);
+	  //cout << endl << "at least one path accepted? " << triggerResults.product()->accept() << endl;
 
-	  // save name of accepted trigger
-	  new((*acceptedTriggers)[iAcceptedTriggers]) TObjString( triggerEvent.product()->filterLabel(index).c_str() );
-	  ++iAcceptedTriggers;  
+	  const unsigned int n_TriggerResults( triggerResults.product()->size() );
+	  for ( unsigned int itrig( 0 ); itrig < n_TriggerResults; ++itrig )
+	    {
+	      if ( triggerResults.product()->accept( itrig ) )
+		{
+		  //cout << "path " << triggerNames.triggerName( itrig );
+		  //cout << ", module index " << triggerResults.product()->index( itrig );
+		  //cout << ", state (Ready = 0, Pass = 1, Fail = 2, Exception = 3) " << triggerResults.product()->state( itrig );
+		  //cout << ", accept " << triggerResults.product()->accept( itrig );
+		  //cout << endl;
+
+		  // save name of accepted trigger path
+		  new((*acceptedTriggers)[iAcceptedTriggers]) TObjString( (triggerNames.triggerName( itrig )).c_str() );
+		  ++iAcceptedTriggers;
+		}
+	    }
 	}
     }
 
-  //
-  // old method to access trigger bits (i.e. accepted paths)
-  // use for CMSSW versions < 2.x
-  //
-
-  //   if (e.getByLabel( triggerResultsTag, triggerResults ) )
-  //     {
-  //       triggerNames.init( *(triggerResults.product()) );
-  
-  //       acceptedTriggers->Clear();
-  //       unsigned int iAcceptedTriggers( 0 ); 
-  //       if ( triggerResults.product()->wasrun() )
-  // 	{
-  // 	  LogDebug("UEAnalysis") << "at least one path out of " << triggerResults.product()->size() << " ran? " << triggerResults.product()->wasrun();
-  
-  // 	  if ( triggerResults.product()->accept() ) 
-  // 	    {
-  // 	      LogDebug("UEAnalysis") << "at least one path accepted? " << triggerResults.product()->accept() ;
-  
-  // 	      const unsigned int n_TriggerResults( triggerResults.product()->size() );
-  // 	      for ( unsigned int itrig( 0 ); itrig < n_TriggerResults; ++itrig )
-  // 		{
-  // 		  LogDebug("UEAnalysis") << "path " << triggerNames.triggerName( itrig ) 
-  // 					 << ", module index " << triggerResults.product()->index( itrig )
-  // 					 << ", state (Ready = 0, Pass = 1, Fail = 2, Exception = 3) " << triggerResults.product()->state( itrig )
-  // 					 << ", accept " << triggerResults.product()->accept( itrig );
-  
-  // 		  if ( triggerResults.product()->accept( itrig ) )
-  // 		    {
-  // 		      // save name of accepted trigger path
-  // 		      new((*acceptedTriggers)[iAcceptedTriggers]) TObjString( (triggerNames.triggerName( itrig )).c_str() );
-  // 		      ++iAcceptedTriggers;
-  // 		    }
-  // 		}
-  // 	    }
-  // 	}
-  //     }
-
   // gen level analysis
   // skipped, if onlyRECO flag set to true
-  
+
   if(!onlyRECO){
     
     e.getByLabel( mcEvent           , EvtHandle        );
@@ -205,6 +281,7 @@ void AnalysisRootpleProducer::analyze( const Event& e, const EventSetup& )
       std::vector<GenJet>::const_iterator it(ChgGenJetContainer.begin()), itEnd(ChgGenJetContainer.end());
       for ( int iChargedJet(0); it != itEnd; ++it, ++iChargedJet)
 	{
+	  fillChargedJet(it->p(),it->pt(),it->eta(),it->phi());
 	  new((*ChargedJet)[iChargedJet]) TLorentzVector(it->px(), it->py(), it->pz(), it->energy());
 	}
     }
@@ -224,6 +301,7 @@ void AnalysisRootpleProducer::analyze( const Event& e, const EventSetup& )
       std::vector<GenJet>::const_iterator it(GenJetContainer.begin()), itEnd(GenJetContainer.end());
       for ( int iInclusiveJet(0); it != itEnd; ++it, ++iInclusiveJet)
 	{
+	  fillInclusiveJet(it->p(),it->pt(),it->eta(),it->phi());
 	  new((*InclusiveJet)[iInclusiveJet]) TLorentzVector(it->px(), it->py(), it->pz(), it->energy());
 	}
     }
@@ -243,6 +321,7 @@ void AnalysisRootpleProducer::analyze( const Event& e, const EventSetup& )
       std::vector<math::XYZTLorentzVector>::const_iterator it(GenPart.begin()), itEnd(GenPart.end());
       for( int iMonteCarlo(0); it != itEnd; ++it, ++iMonteCarlo )
 	{
+	  fillMCParticles(it->P(),it->Pt(),it->Eta(),it->Phi());
 	  new((*MonteCarlo)[iMonteCarlo]) TLorentzVector(it->Px(), it->Py(), it->Pz(), it->E());
 	}
     }
@@ -251,75 +330,71 @@ void AnalysisRootpleProducer::analyze( const Event& e, const EventSetup& )
 
   
   // reco level analysis
-
+  
+  e.getByLabel( tracksCollName     , CandHandleRECO     );
+  e.getByLabel( recoCaloJetCollName, RecoCaloJetsHandle );
+  e.getByLabel( tracksJetCollName  , TracksJetsHandle   );
+  
   std::vector<math::XYZTLorentzVector> Tracks;
-  std::vector<CaloJet> RecoCaloJetContainer;
   std::vector<BasicJet> TracksJetContainer;
-
+  std::vector<CaloJet> RecoCaloJetContainer;
+  
   Tracks.clear();
-  RecoCaloJetContainer.clear();
   TracksJetContainer.clear();
+  RecoCaloJetContainer.clear();
   
   Track->Clear();
   TracksJet->Clear();
   CalorimeterJet->Clear();
 
-  if ( e.getByLabel( recoCaloJetCollName, RecoCaloJetsHandle ) )
+  if(RecoCaloJetsHandle->size())
     {
-      if(RecoCaloJetsHandle->size())
-	{
-	  for(CaloJetCollection::const_iterator it(RecoCaloJetsHandle->begin()), itEnd(RecoCaloJetsHandle->end());
-	      it!=itEnd;++it)
-	    {
-	      RecoCaloJetContainer.push_back(*it);
-	    }
-	  std::stable_sort(RecoCaloJetContainer.begin(),RecoCaloJetContainer.end(),CaloJetSort());
-	  
-	  std::vector<CaloJet>::const_iterator it(RecoCaloJetContainer.begin()), itEnd(RecoCaloJetContainer.end());
-	  for( int iCalorimeterJet(0); it != itEnd; ++it, ++iCalorimeterJet)
-	    {
-	      new((*CalorimeterJet)[iCalorimeterJet]) TLorentzVector(it->px(), it->py(), it->pz(), it->energy());
-	    }
-	}
+    for(CaloJetCollection::const_iterator it(RecoCaloJetsHandle->begin()), itEnd(RecoCaloJetsHandle->end());
+	it!=itEnd;++it)
+      {
+	RecoCaloJetContainer.push_back(*it);
+      }
+    std::stable_sort(RecoCaloJetContainer.begin(),RecoCaloJetContainer.end(),CaloJetSort());
+
+    std::vector<CaloJet>::const_iterator it(RecoCaloJetContainer.begin()), itEnd(RecoCaloJetContainer.end());
+    for( int iCalorimeterJet(0); it != itEnd; ++it, ++iCalorimeterJet)
+      {
+	fillCaloJet(it->p(),it->pt(),it->eta(),it->phi());
+	new((*CalorimeterJet)[iCalorimeterJet]) TLorentzVector(it->px(), it->py(), it->pz(), it->energy());
+      }
     }
     
-  
-  if ( e.getByLabel( tracksJetCollName, TracksJetsHandle ) )
+  if(TracksJetsHandle->size())
     {
-      if(TracksJetsHandle->size())
+      for(BasicJetCollection::const_iterator it(TracksJetsHandle->begin()), itEnd(TracksJetsHandle->end());
+	  it!=itEnd;++it)
 	{
-	  for(BasicJetCollection::const_iterator it(TracksJetsHandle->begin()), itEnd(TracksJetsHandle->end());
-	      it!=itEnd;++it)
-	    {
-	      TracksJetContainer.push_back(*it);
-	    }
-	  std::stable_sort(TracksJetContainer.begin(),TracksJetContainer.end(),BasicJetSort());
-	  
-	  std::vector<BasicJet>::const_iterator it(TracksJetContainer.begin()), itEnd(TracksJetContainer.end());
-	  for(int iTracksJet(0); it != itEnd; ++it, ++iTracksJet)
-	    {
-	      new((*TracksJet)[iTracksJet]) TLorentzVector(it->px(), it->py(), it->pz(), it->energy());
-	    }
+	  TracksJetContainer.push_back(*it);
+	}
+      std::stable_sort(TracksJetContainer.begin(),TracksJetContainer.end(),BasicJetSort());
+    
+      std::vector<BasicJet>::const_iterator it(TracksJetContainer.begin()), itEnd(TracksJetContainer.end());
+      for(int iTracksJet(0); it != itEnd; ++it, ++iTracksJet)
+	{
+	  fillTracksJet(it->p(),it->pt(),it->eta(),it->phi());
+	  new((*TracksJet)[iTracksJet]) TLorentzVector(it->px(), it->py(), it->pz(), it->energy());
 	}
     }
   
-
-  if ( e.getByLabel( tracksCollName , CandHandleRECO ) )
+  if(CandHandleRECO->size())
     {
-      if(CandHandleRECO->size())
+      for(CandidateCollection::const_iterator it(CandHandleRECO->begin()), itEnd(CandHandleRECO->end());
+	  it!=itEnd;++it)
 	{
-	  for(CandidateCollection::const_iterator it(CandHandleRECO->begin()), itEnd(CandHandleRECO->end());
-	      it!=itEnd;++it)
-	    {
-	      Tracks.push_back(it->p4());
-	    }
-	  std::stable_sort(Tracks.begin(),Tracks.end(),GreaterPt());
-	  
-	  std::vector<math::XYZTLorentzVector>::const_iterator it( Tracks.begin()), itEnd(Tracks.end());
-	  for(int iTracks(0); it != itEnd; ++it, ++iTracks)
-	    {
-	      new ((*Track)[iTracks]) TLorentzVector(it->Px(), it->Py(), it->Pz(), it->E());
-	    }
+	  Tracks.push_back(it->p4());
+	}
+      std::stable_sort(Tracks.begin(),Tracks.end(),GreaterPt());
+    
+      std::vector<math::XYZTLorentzVector>::const_iterator it( Tracks.begin()), itEnd(Tracks.end());
+      for(int iTracks(0); it != itEnd; ++it, ++iTracks)
+	{
+	  fillTracks(it->P(),it->Pt(),it->Eta(),it->Phi());
+	  new ((*Track)[iTracks]) TLorentzVector(it->Px(), it->Py(), it->Pz(), it->E());
 	}
     }
   
