@@ -1,0 +1,126 @@
+
+    # run SISCone algorithm on tracks/charged particles
+    # cone radius 0.7
+    # seed threshold 1.0 GeV
+    # 
+    # jet built from input with pT > 0.5 GeV/c or 0.9 GeV/c
+
+    include "RecoJets/JetProducers/data/FastjetParameters.cfi"
+    # block is called FastjetNoPU
+
+    block FastjetWithAreaPU = {
+         string UE_Subtraction = "no"   
+         double Ghost_EtaMax = 6
+         int32 Active_Area_Repeats = 5
+         double GhostArea = 0.01
+    }
+
+    include "RecoJets/JetProducers/data/SISConeJetParameters.cfi"
+
+    block UEAnalysisSISConeJetParameters =	
+    {
+        double coneRadius = 0.7
+	double inputEtMin = 0.9
+	double inputEMin  = 0.
+	double jetPtMin   = 5.
+	untracked string jetType = "GenJet"
+	untracked bool verbose = false
+    }
+
+    # jets from stable generator particles
+    # (pT > 0.9 GeV/c) 
+    module ueSisCone7GenJet = SISConeJetProducer 
+    {
+        using FastjetNoPU
+        using SISConeJetParameters
+        using UEAnalysisSISConeJetParameters
+	InputTag src = goodParticles
+    }
+
+    # jets from stable generator particles
+    # (pT > 0.9 GeV/c)
+    module ueSisCone7ChgGenJet = SISConeJetProducer
+    {
+        using FastjetNoPU
+        using SISConeJetParameters
+        using UEAnalysisSISConeJetParameters
+	InputTag src = chargeParticles
+    }
+
+    # jets from tracks
+    # (pT > 0.9 GeV/c)
+    module ueSisCone7TracksJet = SISConeJetProducer
+    {
+        using FastjetNoPU
+        using SISConeJetParameters
+        using UEAnalysisSISConeJetParameters
+        InputTag src = goodTracks
+    }
+    replace ueSisCone7TracksJet.jetType = "BasicJet"
+
+
+    # jets from stable generator particles
+    # (pT > 0.5 GeV/c, charged and neutral)
+    module ueSisCone7GenJet500 = SISConeJetProducer
+    {
+        using FastjetNoPU
+        using SISConeJetParameters
+        using UEAnalysisSISConeJetParameters
+	InputTag src = goodParticles
+    }
+    replace ueSisCone7GenJet500.inputEtMin = 0.5	
+
+    # jets from stable generator particles
+    # (pT > 0.5 GeV/c, charged)
+    module ueSisCone7ChgGenJet500 = SISConeJetProducer
+    {
+        using FastjetNoPU
+        using SISConeJetParameters
+        using UEAnalysisSISConeJetParameters
+	InputTag src = chargeParticles
+    }
+    replace ueSisCone7ChgGenJet500.inputEtMin = 0.5	
+
+    # jets from tracks
+    # (pT > 0.5 GeV/c)
+    module ueSisCone7TracksJet500 = SISConeJetProducer
+    {
+        using FastjetNoPU
+        using SISConeJetParameters
+        using UEAnalysisSISConeJetParameters
+        InputTag src = goodTracks
+    }
+    replace ueSisCone7TracksJet500.jetType    = "BasicJet"
+    replace ueSisCone7TracksJet500.inputEtMin = 0.5
+
+    sequence UEAnalysisJetsOnlyMC = 
+    {
+	ueSisCone7GenJet,
+	ueSisCone7ChgGenJet,
+	ueSisCone7GenJet500,
+	ueSisCone7ChgGenJet500
+    }
+    sequence UEAnalysisJetsOnlyReco = 
+    {
+	ueSisCone7TracksJet,
+	ueSisCone7TracksJet500
+    }
+
+
+    # apply jet corrections
+    include "JetMETCorrections/Configuration/data/L2RelativeCorrection_iCSA08_10PB.cff"
+    include "JetMETCorrections/Configuration/data/L3AbsoluteCorrection_iCSA08_10PB.cff"
+    include "JetMETCorrections/Configuration/data/L2L3Corrections_iCSA08_10PB.cff"
+    # corrected jet collection is called L2L3ChainJetCorJetScone7
+
+    es_prefer L2JetCorrectorScone7 = L2RelativeCorrectionService {} 
+    sequence UEAnalysisJetCorrections = {L2L3ChainJetCorJetScone7}
+
+    sequence UEAnalysisJets = {
+
+	UEAnalysisJetsOnlyMC,
+	UEAnalysisJetsOnlyReco,
+	UEAnalysisJetCorrections
+    }
+
+
