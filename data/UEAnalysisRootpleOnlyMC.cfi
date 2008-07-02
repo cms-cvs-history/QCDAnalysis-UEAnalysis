@@ -12,3 +12,28 @@ module UEAnalysisRootpleOnlyMC = AnalysisRootpleProducerOnlyMC {
     #label of charged MC particles
     untracked InputTag ChgGenPartCollectionName = chargeParticles
 }
+
+# temporary fast solution:
+# repeat analyzer and save jets with different input
+#
+module UEAnalysisRootpleOnlyMC500 = AnalysisRootpleProducerOnlyMC {
+
+    #lable of MC event
+    untracked InputTag MCEvent = source
+
+    #label of Jet made with MC particles
+    untracked InputTag GenJetCollectionName = IC5GenJet500
+
+    #label of Jet made with only charged MC particles
+    untracked InputTag ChgGenJetCollectionName = IC5ChgGenJet500
+
+    #label of charged MC particles
+    untracked InputTag ChgGenPartCollectionName = chargeParticles
+
+}
+
+sequence UEAnalysisOnlyMC = 
+{
+        UEAnalysisRootpleOnlyMC,
+        UEAnalysisRootpleOnlyMC500
+}
