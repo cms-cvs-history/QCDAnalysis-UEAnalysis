@@ -15,5 +15,5 @@
 <use name=root>
 
 <export>
-   <lib name=QCAnalysisUEAnalysis>
+   <lib name=QCDAnalysisUEAnalysis>
 </export>	
