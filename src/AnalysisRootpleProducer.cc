@@ -126,7 +126,7 @@ AnalysisRootpleProducer::AnalysisRootpleProducer( const ParameterSet& pset )
   NumberCaloJet=0;
 }
 
-void AnalysisRootpleProducer::beginJob( const EventSetup& )
+void AnalysisRootpleProducer::beginJob()
 {
  
   // use TFileService for output to root file
