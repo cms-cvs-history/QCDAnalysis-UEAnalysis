@@ -1,5 +1,6 @@
 // Authors: F. Ambroglini, L. Fano'
 #include <QCDAnalysis/UEAnalysis/interface/AnalysisRootpleProducer.h>
+#include "FWCore/Common/interface/TriggerNames.h"
  
 using namespace edm;
 using namespace std;
@@ -211,7 +212,7 @@ void AnalysisRootpleProducer::analyze( const Event& e, const EventSetup& )
 {
   
   e.getByLabel( triggerResultsTag, triggerResults );
-  triggerNames.init( *(triggerResults.product()) );
+  const edm::TriggerNames & triggerNames = e.triggerNames(*triggerResults);
 
   acceptedTriggers->Clear();
   unsigned int iAcceptedTriggers( 0 ); 
