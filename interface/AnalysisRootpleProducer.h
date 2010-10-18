@@ -37,11 +37,6 @@
 #include <DataFormats/HLTReco/interface/TriggerEvent.h> 
 #include <DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h>
 
-using namespace edm;
-using namespace reco;
-using namespace trigger;
-using std::vector;
-
 class AnalysisRootpleProducer : public edm::EDAnalyzer
 {
   
@@ -69,24 +64,24 @@ private:
   
   bool onlyRECO;
 
-  InputTag mcEvent; // label of MC event
-  InputTag genJetCollName; // label of Jet made with MC particles
-  InputTag chgJetCollName; // label of Jet made with only charged MC particles
-  InputTag chgGenPartCollName; // label of charged MC particles
-  InputTag tracksJetCollName;
-  InputTag recoCaloJetCollName;
-  InputTag tracksCollName;
-  InputTag triggerResultsTag;
+  edm::InputTag mcEvent; // label of MC event
+  edm::InputTag genJetCollName; // label of Jet made with MC particles
+  edm::InputTag chgJetCollName; // label of Jet made with only charged MC particles
+  edm::InputTag chgGenPartCollName; // label of charged MC particles
+  edm::InputTag tracksJetCollName;
+  edm::InputTag recoCaloJetCollName;
+  edm::InputTag tracksCollName;
+  edm::InputTag triggerResultsTag;
 
-  Handle< HepMCProduct        > EvtHandle ;
-  Handle< vector<GenParticle> > CandHandleMC ;
-  Handle< GenJetCollection    > GenJetsHandle ;
-  Handle< GenJetCollection    > ChgGenJetsHandle ;
-  Handle< CandidateCollection > CandHandleRECO ;
-  Handle< BasicJetCollection  > TracksJetsHandle ;
-  Handle< CaloJetCollection   > RecoCaloJetsHandle ;
-  Handle<TriggerResults> triggerResults;
-  //  Handle<TriggerFilterObjectWithRefs> hltFilter; // not used at the moment: can access objects that fired the trigger
+  edm::Handle< edm::HepMCProduct         > EvtHandle ;
+  edm::Handle< std::vector<reco::GenParticle> > CandHandleMC ;
+  edm::Handle< reco::GenJetCollection    > GenJetsHandle ;
+  edm::Handle< reco::GenJetCollection    > ChgGenJetsHandle ;
+  edm::Handle< reco::CandidateCollection > CandHandleRECO ;
+  edm::Handle< reco::BasicJetCollection  > TracksJetsHandle ;
+  edm::Handle< reco::CaloJetCollection   > RecoCaloJetsHandle ;
+  edm::Handle< edm::TriggerResults       > triggerResults;
+  //  edm::Handle<TriggerFilterObjectWithRefs> hltFilter; // not used at the moment: can access objects that fired the trigger
 
   edm::Service<TFileService> fs;
 

@@ -13,10 +13,10 @@
 #include <TObjString.h>
 //
 
-typedef pair<TVector3*,TVector3*> AssociatedObject;
+typedef std::pair<TVector3*,TVector3*> AssociatedObject;
 
 void UEAnalysisOnRootple::MultiAnalysis(char* filelist,char* outname,Float_t weight[7],Float_t eta,
-					  Float_t triggerPt,string type,string trigger,string tkpt,Float_t ptCut)
+					  Float_t triggerPt,std::string type,std::string trigger,std::string tkpt,Float_t ptCut)
 {
   BeginJob(outname);
   etaRegion = eta;
@@ -28,7 +28,7 @@ void UEAnalysisOnRootple::MultiAnalysis(char* filelist,char* outname,Float_t wei
   int filenumber = 0;
   while(inFile.getline(RootTupleName,255)) {
     if (RootTupleName[0] != '#') {
-      cout<<"I'm analyzing file "<<RootTupleName<<endl;
+      std::cout<<"I'm analyzing file "<<RootTupleName<<std::endl;
 
       //TFile *f =  new TFile(RootTupleName);
       f = TFile::Open(RootTupleName);
@@ -55,17 +55,17 @@ void UEAnalysisOnRootple::MultiAnalysis(char* filelist,char* outname,Float_t wei
 }
 
 
-void UEAnalysisOnRootple::Loop(Float_t we,Float_t triggerPt,string type,string trigger,string tkpt)
+void UEAnalysisOnRootple::Loop(Float_t we,Float_t triggerPt,std::string type,std::string trigger,std::string tkpt)
 {
   if (fChain == 0) 
     {
-      cout << "fChain == 0 return." << endl;
+      std::cout << "fChain == 0 return." << std::endl;
       return;
     }
 
   Long64_t nentries = fChain->GetEntriesFast();
 
-  cout << "number of entries: " << nentries << endl;
+  std::cout << "number of entries: " << nentries << std::endl;
 
   
   Long64_t nbytes = 0, nb = 0;
@@ -76,11 +76,11 @@ void UEAnalysisOnRootple::Loop(Float_t we,Float_t triggerPt,string type,string t
 
 
 //     int nAcceptedTriggers( acceptedTriggers->GetSize() );
-//     if (nAcceptedTriggers) cout << endl << "Event has been accepted by " << acceptedTriggers->GetSize() << endl;
+//     if (nAcceptedTriggers) std::cout << std::endl << "Event has been accepted by " << acceptedTriggers->GetSize() << std::endl;
 //     for ( int iAcceptedTrigger(0); iAcceptedTrigger<nAcceptedTriggers; ++iAcceptedTrigger )
 //       {
-// 	cout << "\t(" << iAcceptedTrigger << ") trigger path ";
-// 	cout << (acceptedTriggers->At(iAcceptedTrigger))->GetName() << endl;
+// 	std::cout << "\t(" << iAcceptedTrigger << ") trigger path ";
+// 	std::cout << (acceptedTriggers->At(iAcceptedTrigger))->GetName() << std::endl;
 //       } 
 
     if(type=="Jet"){
@@ -122,7 +122,7 @@ void UEAnalysisOnRootple::Loop(Float_t we,Float_t triggerPt,string type,string t
   }
 }
 
-void UEAnalysisOnRootple::UEAnalysisMC(Float_t weight,string tkpt)
+void UEAnalysisOnRootple::UEAnalysisMC(Float_t weight,std::string tkpt)
 {
 
   for(int i=0;i<NumberMCParticles;i++){
@@ -257,7 +257,7 @@ void UEAnalysisOnRootple::UEAnalysisMC(Float_t weight,string tkpt)
 
 }
 
-void UEAnalysisOnRootple::UEAnalysisRECO(Float_t weight,string tkpt)
+void UEAnalysisOnRootple::UEAnalysisRECO(Float_t weight,std::string tkpt)
 {
   
   for(int i=0;i<NumberTracks;i++){
@@ -472,9 +472,9 @@ void UEAnalysisOnRootple::UEAnalysisRECO(Float_t weight,string tkpt)
 
 }
 
-void UEAnalysisOnRootple::MPIAnalysisMC(Float_t weight,string tkpt)
+void UEAnalysisOnRootple::MPIAnalysisMC(Float_t weight,std::string tkpt)
 {
-  vector<TVector3*> JetMC;
+  std::vector<TVector3*> JetMC;
   JetMC.clear();
   
   for(int j=0;j<NumberChargedJet;j++){
@@ -485,14 +485,14 @@ void UEAnalysisOnRootple::MPIAnalysisMC(Float_t weight,string tkpt)
     }
   }
   
-  vector<AssociatedObject> assoJetMC;
+  std::vector<AssociatedObject> assoJetMC;
   assoJetMC.clear();
 
   while(JetMC.size()>1){
     int oldSize = JetMC.size();
-    vector<TVector3*>::iterator itH = JetMC.begin();
+    std::vector<TVector3*>::iterator itH = JetMC.begin();
     if((*itH)->Pt()>=ptThreshold){
-      for(vector<TVector3*>::iterator it=JetMC.begin();it!=JetMC.end();it++){
+      for(std::vector<TVector3*>::iterator it=JetMC.begin();it!=JetMC.end();it++){
 	float azimuthDistanceJet = fabs( (*itH)->Phi() - (*it)->Phi() );
 	if((*it)->Pt()/(*itH)->Pt()>=0.3){
 	  if( (piG - rangePhi) <  azimuthDistanceJet && azimuthDistanceJet < (piG + rangePhi)) {
@@ -514,7 +514,7 @@ void UEAnalysisOnRootple::MPIAnalysisMC(Float_t weight,string tkpt)
   
   if(assoJetMC.size()){
     fNumbMPIMC->Fill(assoJetMC.size());
-    vector<AssociatedObject>::iterator at= assoJetMC.begin();
+    std::vector<AssociatedObject>::iterator at= assoJetMC.begin();
     
     const TVector3* leadingJet((*at).first);
     const TVector3* secondJet((*at).second);
@@ -532,9 +532,9 @@ void UEAnalysisOnRootple::MPIAnalysisMC(Float_t weight,string tkpt)
   }
 }
 
-void UEAnalysisOnRootple::MPIAnalysisRECO(Float_t weight,string tkpt)
+void UEAnalysisOnRootple::MPIAnalysisRECO(Float_t weight,std::string tkpt)
 {
-  vector<TVector3*> JetRECO;
+  std::vector<TVector3*> JetRECO;
   JetRECO.clear();
   
   for(int j=0;j<NumberTracksJet;j++){
@@ -546,14 +546,14 @@ void UEAnalysisOnRootple::MPIAnalysisRECO(Float_t weight,string tkpt)
     }
   }
   
-  vector<AssociatedObject> assoJetRECO;
+  std::vector<AssociatedObject> assoJetRECO;
   assoJetRECO.clear();
 
   while(JetRECO.size()>1){
     int oldSize = JetRECO.size();
-    vector<TVector3*>::iterator itH = JetRECO.begin();
+    std::vector<TVector3*>::iterator itH = JetRECO.begin();
     if((*itH)->Pt()>=ptThreshold){
-      for(vector<TVector3*>::iterator it=JetRECO.begin();it!=JetRECO.end();it++){
+      for(std::vector<TVector3*>::iterator it=JetRECO.begin();it!=JetRECO.end();it++){
 	float azimuthDistanceJet = fabs( (*itH)->Phi() - (*it)->Phi() );
 	if((*it)->Pt()/(*itH)->Pt()>=0.3){
 	  if( (piG - rangePhi) <  azimuthDistanceJet && azimuthDistanceJet < (piG + rangePhi)) {
@@ -575,7 +575,7 @@ void UEAnalysisOnRootple::MPIAnalysisRECO(Float_t weight,string tkpt)
   
   if(assoJetRECO.size()){
     fNumbMPIRECO->Fill(assoJetRECO.size());
-    vector<AssociatedObject>::iterator at= assoJetRECO.begin();
+    std::vector<AssociatedObject>::iterator at= assoJetRECO.begin();
     
     const TVector3* leadingJet((*at).first);
     const TVector3* secondJet((*at).second);
@@ -593,7 +593,7 @@ void UEAnalysisOnRootple::MPIAnalysisRECO(Float_t weight,string tkpt)
   }
 }
 
-void UEAnalysisOnRootple::JetCalibAnalysis(Float_t weight,string tkpt)
+void UEAnalysisOnRootple::JetCalibAnalysis(Float_t weight,std::string tkpt)
 {
 
   if(NumberCaloJet!=0&&NumberChargedJet!=0&&NumberTracksJet!=0&&NumberInclusiveJet!=0){
@@ -938,7 +938,7 @@ void UEAnalysisOnRootple::EndJob()
   hFile->Close();
 }
 
-Float_t UEAnalysisOnRootple::CalibrationPt(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CalibrationPt(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     Float_t corr = 0.1122*exp(-(0.2251*ptReco))+1.086-0.0005408*ptReco;
     return  corr;
@@ -949,7 +949,7 @@ Float_t UEAnalysisOnRootple::CalibrationPt(Float_t ptReco,string tkpt){
   }
 }
 
-Float_t UEAnalysisOnRootple::CorrectionPtTrans(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CorrectionPtTrans(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     //    Float_t corr = 2.80452*exp(-(0.278432*ptReco))+1.30988-0.000869106*ptReco;
     Float_t corr = 1.214*exp(-(0.9637*ptReco))+1.204-0.0003461*ptReco;
@@ -962,7 +962,7 @@ Float_t UEAnalysisOnRootple::CorrectionPtTrans(Float_t ptReco,string tkpt){
   }
 }
 
-Float_t UEAnalysisOnRootple::CorrectionPtToward(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CorrectionPtToward(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     /*
     Float_t arg = (ptReco-(-248.6))/-355.7;
@@ -981,7 +981,7 @@ Float_t UEAnalysisOnRootple::CorrectionPtToward(Float_t ptReco,string tkpt){
   }
 }
 
-Float_t UEAnalysisOnRootple::CorrectionPtAway(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CorrectionPtAway(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     /*
     Float_t arg = (ptReco-(-1015))/-1235;
@@ -1000,7 +1000,7 @@ Float_t UEAnalysisOnRootple::CorrectionPtAway(Float_t ptReco,string tkpt){
   }
 }
 
-Float_t UEAnalysisOnRootple::CorrectionNTrans(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CorrectionNTrans(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     //    Float_t corr = 2.41052*exp(-(0.268028*ptReco))+1.26675-0.000509399*ptReco;
     Float_t corr = 1.101*exp(-(0.9939*ptReco))+1.198-0.0001467*ptReco;
@@ -1013,7 +1013,7 @@ Float_t UEAnalysisOnRootple::CorrectionNTrans(Float_t ptReco,string tkpt){
   }
 }
 
-Float_t UEAnalysisOnRootple::CorrectionNToward(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CorrectionNToward(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     /*
     Float_t arg = (ptReco-(-701.9))/-763.1;
@@ -1032,7 +1032,7 @@ Float_t UEAnalysisOnRootple::CorrectionNToward(Float_t ptReco,string tkpt){
   }
 }
 
-Float_t UEAnalysisOnRootple::CorrectionNAway(Float_t ptReco,string tkpt){
+Float_t UEAnalysisOnRootple::CorrectionNAway(Float_t ptReco,std::string tkpt){
   if(tkpt=="900"){
     /*
     Float_t arg = (ptReco-(-1512))/-1517;

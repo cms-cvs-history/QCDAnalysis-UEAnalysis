@@ -4,7 +4,7 @@
 
 UEAnalysisUE::UEAnalysisUE()
 {
-  cout << "UEAnalysisUE constructor " <<endl;
+  std::cout << "UEAnalysisUE constructor " <<std::endl;
   piG = acos(-1.);
   cc = new UEAnalysisCorrCali();
 }
@@ -91,10 +91,10 @@ void UEAnalysisUE::Begin(TFile * f)
 
 }
 
-void UEAnalysisUE::ueAnalysisMC(float weight,string tkpt,float etaRegion, float ptThreshold, TClonesArray* MonteCarlo, TClonesArray* ChargedJet)
+void UEAnalysisUE::ueAnalysisMC(float weight,std::string tkpt,float etaRegion, float ptThreshold, TClonesArray* MonteCarlo, TClonesArray* ChargedJet)
 {
 
-  //cout << "UEAnalysisUE::ueAnalysisMC(...)" << endl;
+  //std::cout << "UEAnalysisUE::ueAnalysisMC(...)" << std::endl;
 
   TLorentzVector* leadingJet;
   Float_t PTLeadingCJ = -10;
@@ -108,15 +108,15 @@ void UEAnalysisUE::ueAnalysisMC(float weight,string tkpt,float etaRegion, float 
   }
 
 
-  //cout << "PTLeadingCJ " << PTLeadingCJ << endl;
+  //std::cout << "PTLeadingCJ " << PTLeadingCJ << std::endl;
 
   if ( PTLeadingCJ == -10. )
     {
-      //cout << "return" << endl;
+      //std::cout << "return" << std::endl;
       return;
     }
 
-  //cout << "for(int i=0;i<MonteCarlo->GetSize();i++){" << endl;
+  //std::cout << "for(int i=0;i<MonteCarlo->GetSize();i++){" << std::endl;
 
   for(int i=0;i<MonteCarlo->GetSize();i++){
     TLorentzVector *v = (TLorentzVector*)MonteCarlo->At(i);    
@@ -137,7 +137,7 @@ void UEAnalysisUE::ueAnalysisMC(float weight,string tkpt,float etaRegion, float 
     }
   }
   
-  //cout << "for(int i=0;i<100;i++){" << endl;
+  //std::cout << "for(int i=0;i<100;i++){" << std::endl;
 
   for(int i=0;i<100;i++){
     pdN_vs_etaMC->Fill((i*0.05)+0.025,temp3MC->GetBinContent(i+1)/0.1,weight);
@@ -188,7 +188,7 @@ void UEAnalysisUE::ueAnalysisMC(float weight,string tkpt,float etaRegion, float 
     
   }
   
-  //cout << "bool orderedN = false;" << endl;
+  //std::cout << "bool orderedN = false;" << std::endl;
 
   bool orderedN = false;
   //  bool orderedP = false;
@@ -254,11 +254,11 @@ void UEAnalysisUE::ueAnalysisMC(float weight,string tkpt,float etaRegion, float 
   temp1MC->Reset();
   temp2MC->Reset();
 
-  //cout << "done" << endl;
+  //std::cout << "done" << std::endl;
 
 }
 
-void UEAnalysisUE::ueAnalysisRECO(float weight,string tkpt,float etaRegion,float ptThreshold, TClonesArray* Track, TClonesArray* TracksJet)
+void UEAnalysisUE::ueAnalysisRECO(float weight,std::string tkpt,float etaRegion,float ptThreshold, TClonesArray* Track, TClonesArray* TracksJet)
 {
   
   TLorentzVector* leadingJet;

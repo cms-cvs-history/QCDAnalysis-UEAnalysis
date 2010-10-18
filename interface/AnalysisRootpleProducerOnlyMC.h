@@ -28,10 +28,6 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
-using namespace edm;
-using namespace reco;
-using std::vector;
-
 class AnalysisRootpleProducerOnlyMC : public edm::EDAnalyzer
 {
   
@@ -52,15 +48,15 @@ public:
 
 private:
   
-  InputTag mcEvent; // label of MC event
-  InputTag genJetCollName; // label of Jet made with MC particles
-  InputTag chgJetCollName; // label of Jet made with only charged MC particles
-  InputTag chgGenPartCollName; // label of charged MC particles
+  edm::InputTag mcEvent; // label of MC event
+  edm::InputTag genJetCollName; // label of Jet made with MC particles
+  edm::InputTag chgJetCollName; // label of Jet made with only charged MC particles
+  edm::InputTag chgGenPartCollName; // label of charged MC particles
 
-  Handle< HepMCProduct        > EvtHandle        ;
-  Handle< vector<GenParticle> > CandHandleMC     ;
-  Handle< GenJetCollection    > GenJetsHandle    ;
-  Handle< GenJetCollection    > ChgGenJetsHandle ;
+  edm::Handle< edm::HepMCProduct         > EvtHandle        ;
+  edm::Handle< std::vector<reco::GenParticle> > CandHandleMC     ;
+  edm::Handle< reco::GenJetCollection    > GenJetsHandle    ;
+  edm::Handle< reco::GenJetCollection    > ChgGenJetsHandle ;
 
   
   float piG;

@@ -16,16 +16,14 @@
 
 #include "UEAnalysisCorrCali.h"
 
-using namespace std;
-
 class UEAnalysisUE {
  public :
 
   UEAnalysisUE();
   ~UEAnalysisUE(){}
 
-  void ueAnalysisMC(float,string,float,float,TClonesArray*,TClonesArray*);
-  void ueAnalysisRECO(float,string,float,float,TClonesArray*,TClonesArray*);
+  void ueAnalysisMC(float,std::string,float,float,TClonesArray*,TClonesArray*);
+  void ueAnalysisRECO(float,std::string,float,float,TClonesArray*,TClonesArray*);
 
   void Begin(TFile *);
 

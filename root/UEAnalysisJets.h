@@ -14,8 +14,6 @@
 
 #include <TClonesArray.h>
 
-using namespace std;
-
 class UEAnalysisJets {
  public :
 
